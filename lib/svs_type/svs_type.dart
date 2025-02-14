@@ -25,7 +25,7 @@ class SVSScreen extends StatelessWidget {
         child: Column(
           children: [
             _buildCard(FontAwesomeIcons.fire, 'Fire System',
-                'a smoke and temperature Sensors that detect smoke\n and Gaz values or any increase in temperature'),
+                'a smoke and temperature Sensors that \ndetect smoke and Gaz values\n or any increase in temperature'),
             _buildCard(FontAwesomeIcons.camera, 'Protection system',
                 'camera that detect known and\n unknown persones in scheduled times'),
             _buildCard(FontAwesomeIcons.batteryFull, 'Energy saving system',

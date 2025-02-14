@@ -8,68 +8,81 @@ class BuildBottomButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final OnboardingController controller = Get.find();
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return Obx(() {
       if (controller.currentPage.value == 0) {
-        return ElevatedButton(
-          onPressed: controller.nextPage,
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
-            backgroundColor: Colors.blue,
-            shape: const RoundedRectangleBorder(), // Normal rectangle shape
+        return Center(
+          child: ElevatedButton(
+            onPressed: controller.nextPage,
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(
+                horizontal: screenWidth * 0.25, // 25% of screen width
+                vertical: 20,
+              ),
+              backgroundColor: Colors.blue,
+              shape: const RoundedRectangleBorder(),
+            ),
+            child: const Text("LET'S START",
+                style: TextStyle(fontSize: 18, color: Colors.white)),
           ),
-          child: const Text("LET'S START",
-              style: TextStyle(fontSize: 18, color: Colors.white)),
         );
       } else {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.blue, // Blue border color
-                  width: 2, // Adjust border width
+        return Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: screenWidth * 0.1), // Adjust side padding
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.blue, // Blue border color
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.zero,
                 ),
-                borderRadius:
-                    BorderRadius.all(Radius.zero), // Round the corners
+                child: ElevatedButton(
+                  onPressed: () {
+                    controller.jumpToPage(controller.onboardingData.length - 1);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.15, // 15% of screen width
+                      vertical: 20,
+                    ),
+                    shape: const RoundedRectangleBorder(),
+                    backgroundColor: Colors.white,
+                  ),
+                  child: const Text(
+                    "SKIP",
+                    style: TextStyle(fontSize: 16, color: Colors.blue),
+                  ),
+                ),
               ),
-              child: ElevatedButton(
+              SizedBox(width: screenWidth * 0.05), // Responsive spacing
+              ElevatedButton(
                 onPressed: () {
-                  controller.jumpToPage(controller.onboardingData.length - 1);
+                  if (controller.currentPage.value ==
+                      controller.onboardingData.length - 1) {
+                    Navigator.pushNamed(context, '/settings');
+                  } else {
+                    controller.nextPage();
+                  }
                 },
                 style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 80, vertical: 20),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.15, // 15% of screen width
+                    vertical: 20,
+                  ),
                   shape: const RoundedRectangleBorder(),
-                  backgroundColor: Colors.white,
+                  backgroundColor: Colors.blue,
                 ),
-                child: const Text(
-                  "SKIP",
-                  style: TextStyle(fontSize: 16, color: Colors.blue),
-                ),
+                child: const Text("NEXT",
+                    style: TextStyle(fontSize: 18, color: Colors.white)),
               ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (controller.currentPage.value ==
-                    controller.onboardingData.length - 1) {
-                  // If on the last page, navigate to the sec-fac page
-                  Navigator.pushNamed(context, '/settings');
-                } else {
-                  controller.nextPage();
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 80, vertical: 20),
-                shape: const RoundedRectangleBorder(),
-                backgroundColor: Colors.blue,
-              ),
-              child: const Text("NEXT",
-                  style: TextStyle(fontSize: 18, color: Colors.white)),
-            ),
-          ],
+            ],
+          ),
         );
       }
     });
